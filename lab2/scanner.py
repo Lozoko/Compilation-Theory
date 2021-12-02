@@ -1,7 +1,9 @@
+import sys
 import ply.lex as lex
 
 tokens = [
     'ID',
+    'IFS',
     'NUMBER',
     'FLOATNUMBER',
     'DOTADD',
@@ -17,9 +19,9 @@ tokens = [
     'UNEQUAL',
     'EQUAL',
     'STRING',
-    'COMMENT',
-    'ERRORTOKEN'
+    'COMMENT'
 ]
+
 t_ADDASSIGN = r'\+='
 t_SUBASSIGN = r'-='
 t_MULASSIGN = r'\*='
@@ -58,18 +60,18 @@ t_ignore = ' \t'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')  # Check for reserved words
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 
 def t_FLOATNUMBER(t):
-    r'(\d+[\.]\d+([eE]-?\d+)?)|(\d+[eE]-\d+)'
+    r'(\d*\.\d+([eE]-?\d+)?)|(\d+\.([eE]-?\d+)?)|(\d+[eE]-?\d+)'
     t.value = float(t.value)
     return t
 
 
 def t_NUMBER(t):
-    r'(\d+([eE]\d+)?)(?=(<=|>=|!=|==|\+|-|\*|/|<|>|\s|]|\)|}|:|,|;|$))'
+    r'\d+'
     t.value = int(t.value)
     return t
 
@@ -80,18 +82,14 @@ def t_STRING(t):
 
 
 def t_COMMENT(t):
-    r'\#+.*'
+    r'\#.*'
     return ''
-
-
-def t_ERRORTOKEN(t):
-    r'([0-9]+[a-zA-Z_]+[a-zA-Z_0-9]*)|([a-zA-Z_0-9]+\.+)|(\.+[a-zA-Z_0-9]+)'
-    return t
 
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
 
 
 def t_error(t):
