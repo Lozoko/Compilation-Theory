@@ -1,0 +1,18 @@
+A = eye(3);
+B = ones(3);
+print A;
+C = A .+ B;
+D = [[1, 2, 3], [4, 5, 6]];
+E = D';
+print A, C, D, E;
+if(1<1){
+    print 1;
+}
+else{
+    print 2;
+}
+A = 3;
+while(A > 0){
+    print A;
+    A -= 1;
+}
